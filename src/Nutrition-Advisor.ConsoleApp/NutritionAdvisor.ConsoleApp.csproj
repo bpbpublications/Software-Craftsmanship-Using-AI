@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>NutritionAdvisor.ConsoleApp</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NutritionAdvisor.Infrastructure\NutritionAdvisor.Infrastructure.csproj" />
+    <ProjectReference Include="..\NutritionAdvisor.UseCases\NutritionAdvisor.UseCases.csproj" />
+  </ItemGroup>
+
+</Project>

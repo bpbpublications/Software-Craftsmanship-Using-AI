@@ -1,0 +1,299 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Nutrition-Advisor.Api",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/nutrition": {
+      "post": {
+        "tags": [
+          "NutritionControllerV"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NutritionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NutritionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NutritionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NutritionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Goal": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "recommendedKcalAdjustment": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "foodRecommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "minProteinPerKg": {
+            "type": "number",
+            "format": "float",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Gender": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ActivityLevel": {
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "gender": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Gender"
+              }
+            ]
+          },
+          "weight": {
+            "maximum": 1000,
+            "minimum": 1,
+            "type": "number",
+            "format": "float"
+          },
+          "height": {
+            "maximum": 3,
+            "minimum": 0.1,
+            "type": "number",
+            "format": "float"
+          },
+          "age": {
+            "maximum": 200,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "activityLevel": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ActivityLevel"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "Food": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "amountG": {
+            "maximum": 1000,
+            "minimum": 0.01,
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NutritionRequest": {
+        "required": [
+          "food",
+          "goal",
+          "person"
+        ],
+        "type": "object",
+        "properties": {
+          "goal": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Goal"
+              }
+            ]
+          },
+          "person": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Person"
+              }
+            ]
+          },
+          "food": {
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Food"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "DailyFoodIntake": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "kcal": {
+            "type": "number",
+            "format": "float"
+          },
+          "protein": {
+            "type": "number",
+            "format": "float"
+          },
+          "carbohydrates": {
+            "type": "number",
+            "format": "float"
+          },
+          "fat": {
+            "type": "number",
+            "format": "float"
+          },
+          "sugar": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Recommended": {
+        "type": "object",
+        "properties": {
+          "maxSugar": {
+            "type": "number",
+            "format": "float"
+          },
+          "maxFat": {
+            "type": "number",
+            "format": "float"
+          },
+          "maxCarbs": {
+            "type": "number",
+            "format": "float"
+          },
+          "minProtein": {
+            "type": "number",
+            "format": "float"
+          },
+          "maxKcal": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DietComparison": {
+        "type": "object",
+        "properties": {
+          "daily": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DailyFoodIntake"
+              }
+            ],
+            "nullable": true
+          },
+          "recommended": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Recommended"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NutritionResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "recommendedFood": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "dietComparison": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DietComparison"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

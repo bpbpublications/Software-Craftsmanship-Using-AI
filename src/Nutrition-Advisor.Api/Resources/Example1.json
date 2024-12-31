@@ -1,0 +1,21 @@
+﻿{
+  "message": "",
+  "recommendedFood": [],
+  "dietComparison": {
+    "daily": {
+      "name": "",
+      "kcal": 0,
+      "protein": 0,
+      "carbohydrates": 0,
+      "fat": 0,
+      "sugar": 0
+    },
+    "recommended": {
+      "maxSugar": 0,
+      "maxFat": 0,
+      "maxCarbs": 0,
+      "minProtein": 0,
+      "maxKcal": 0
+    }
+  }
+}
